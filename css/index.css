@@ -1,0 +1,210 @@
+html {
+  overflow-x: hidden;
+  font-family: Helvetica;
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+  font-size: 625%;
+  width: 100%;
+  height: 100%;
+}
+body {
+  position: relative;
+  margin: 0;
+  font-size: 10px;
+  line-height: 1.4;
+  letter-spacing: 0;
+  color: #fff;
+  background-color: #e7001d;
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  -webkit-text-size-adjust: 100% !important;
+  text-size-adjust: 100% !important;
+}
+.index_first {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url("../images/first.png");
+  background-size: 100% 100%;
+  z-index: 2;
+}
+.index_start {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url("../images/start.png");
+  background-size: 100% 100%;
+  z-index: 1;
+}
+/* 对话框 */
+/* 自己 */
+.im_me {
+  padding: 10px 0 10px 5%;
+  width: 95%;
+  min-height: 60px;
+  display: flex;
+  justify-content: flex-end;
+}
+.im_me_talk {
+  max-width: 80%;
+  background: transparent;
+}
+.im_me_name {
+  line-height: 1.5;
+  font-size: 12px;
+  text-align: end;
+}
+.im_me_name span {
+  margin-right: 25px;
+}
+.im_me_text {
+  color: #000;
+  background: #fff;
+  border-radius: 15px;
+  padding: 10px;
+  font-size: 14px;
+  word-wrap: break-word;
+  position: relative;
+}
+.im_me_upimg {
+  width: 100%;
+}
+.im_me_img {
+  width: 30px;
+  height: 30px;
+  margin: 0 10px;
+  background: transparent;
+}
+.talk_icon {
+  position: absolute;
+  top: 5px;
+  left: -30px;
+  width: 30px;
+  height: 30px;
+}
+/* 对方 */
+.im_user {
+  padding: 10px 5% 10px 0;
+  width: 95%;
+  min-height: 60px;
+  display: flex;
+  justify-content: flex-start;
+}
+.im_user_name {
+  line-height: 1.5;
+  font-size: 12px;
+  text-align: start;
+}
+.im_user_name span {
+  margin-left: 25px;
+}
+.im_user_text {
+  color: #000;
+  background: #fff;
+  border-radius: 15px;
+  padding: 10px;
+  font-size: 14px;
+  word-wrap: break-word;
+}
+.im_user_upimg {
+  width: 100%;
+}
+img {
+  width: 100%;
+  height: 100%;
+}
+.im_user_upimg img {
+  float: left;
+}
+.im_me_upimg img {
+  float: right;
+}
+.talk_loading{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+}
+.talk_loading img{
+    margin-top: 50%;
+    width: 170px;
+    height: 100px;
+}
+/* 按钮 */
+.talk_luyin {
+  width: 100%;
+  margin: auto;
+  position: fixed;
+  top: 85%;
+  left: 0;
+}
+/* 尾页 */
+.index_end_bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url("../images/start.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  -webkit-filter: blur(7px);
+  -moz-filter: blur(7px);
+  -o-filter: blur(7px);
+  -ms-filter: blur(7px);
+  z-index: 2;
+}
+.index_end {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 3;
+}
+.end_title {
+    font-size: 20px;
+  width: 100%;
+  text-align: center;
+  position: fixed;
+  top: 30%;
+  left: 0;
+}
+.end_content {
+    font-size: 14px;
+    width: 100%;
+  text-align: center;
+  position: fixed;
+  top: 40%;
+  left: 0;
+}
+.end_clickget {
+  width: 100%;
+  margin: auto;
+  position: fixed;
+  top: 55%;
+  left: 0;
+}
+.end_share {
+  width: 100%;
+  margin: auto;
+  position: fixed;
+  top: 70%;
+  left: 0;
+}
+.talk_luyin div,
+.end_clickget div,
+.end_share div {
+  width: 58%;
+  margin: auto;
+}

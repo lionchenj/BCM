@@ -1,20 +1,23 @@
-function share(sharedata) {
+var recorder;
+var btnRecord = $("#talk_luyin");
+var startTime = 0;
+var recordTimer = 300,
+  countDown = 10,
+  countDownTimer = 0;
+var url = "https://dev170.weibanker.cn/hongjh/www/bcm/api?url=";
+function share() {
   var ajax_data = {};
-  // ajax_data['url']=window.location.href;
-  ajax_data["url"] = "https://dev170.weibanker.cn/chenjj/www/sina/index.html";
   $.ajax({
-    url: "php/jssdk.php",
+    url: url + "getSignPackage",
     type: "POST",
+    data: { url: window.location.href },
     dataType: "json",
-    data: ajax_data,
-    timeout: 30000,
     success: function(res) {
-      console.log(res);
       wx.config({
-        appId: res.appId,
-        timestamp: res.timestamp,
-        nonceStr: res.nonceStr,
-        signature: res.signature,
+        appId: res.data.appId,
+        timestamp: res.data.timestamp,
+        nonceStr: res.data.nonceStr,
+        signature: res.data.signature,
         jsApiList: [
           // 所有要调用的 API 都要加到这个列表中
           "checkJsApi",
@@ -50,102 +53,85 @@ function share(sharedata) {
           "openProductSpecificView",
           "addCard",
           "chooseCard",
-          "openCard"
+          "openCard",
+          "onVoicePlayEnd"
         ]
       });
       wx.ready(function() {
-		var START,END,recordTimer;
-        //点击录音
-        $("#talk_luyin").on("touchstart", function(event) {
-          $(".talk_btn").attr("src", "./images/clicklongon.png");
-          event.preventDefault();
-          START = new Date().getTime();
-          recordTimer = setTimeout(function() {
-            wx.startRecord({
-              success: function() {
-                localStorage.rainAllowRecord = "true";
-              },
-              cancel: function() {
-                alert("用户拒绝授权录音");
-              }
-            });
-          }, 300);
-        });
-        //松手结束录音
-        $("#talk_luyin").on("touchend", function(event) {
-          $(".talk_btn").attr("src", "./images/clicklong.png");
-          event.preventDefault();
-          END = new Date().getTime();
-          if (END - START < 300) {
-            END = 0;
-            START = 0;
-            //小于300ms，不录音
-            clearTimeout(recordTimer);
-          } else {
-            wx.stopRecord({
-              success: function(res) {
-				console.log(res)
-                voice.localId = res.localId;
-                uploadVoice();
-              },
-              fail: function(res) {
-                alert(JSON.stringify(res));
-              }
-            });
-          }
-        });
-        //上传录音
-        function uploadVoice() {
-          //调用微信的上传录音接口把本地录音先上传到微信的服务器
-          //不过，微信只保留3天，而我们需要长期保存，我们需要把资源从微信服务器下载到自己的服务器
-          wx.uploadVoice({
-            localId: voice.localId, // 需要上传的音频的本地ID，由stopRecord接口获得
-            isShowProgressTips: 1, // 默认为1，显示进度提示
-            success: function(res) {
-              //把录音在微信服务器上的id（res.serverId）发送到自己的服务器供下载。
-              $.ajax({
-                url: "后端处理上传录音的接口",
-                type: "post",
-                data: JSON.stringify(res),
-                dataType: "json",
-                success: function(data) {
-                  alert("文件已经保存到七牛的服务器"); //这回，我使用七牛存储
+        btnRecord
+          .on("touchstart", function(event) {
+            event.preventDefault();
+            $(".talk_show").addClass("live");
+            $(".talk_loading").show();
+            startTime = new Date().getTime();
+            
+            // 延时后录音，避免误操作
+            recordTimer = setTimeout(function() {
+              wx.startRecord({
+                success: function() {
+                  localStorage.rainAllowRecord = "true";
+                  countDownTimer = setInterval(function() {
+                    const newCodeCount = countDown - 1;
+                    console.log(newCodeCount);
+                    if (newCodeCount <= 0) {
+                      countDownTimer && clearInterval(countDownTimer);
+                      countDownTimer = 0;
+                      countDown = newCodeCount;
+                      alert("超时10秒，请重新答题");
+                      wx.stopRecord({
+                        success: function(res) {},
+                        fail: function(res) {}
+                      });
+                    }
+                    countDown = newCodeCount;
+                  }, 1000);
                 },
-                error: function(xhr, errorType, error) {
-                  console.log(error);
+                cancel: function() {
+                  $(".talk_show").removeClass("live");
+                  $(".talk_loading").hide();
+                  alert("用户拒绝了录音授权");
+                }
+              });
+            }, 300);
+          })
+          .on("touchend", function(event) {
+            event.preventDefault();
+            $(".talk_show").removeClass("live");
+            $(".talk_loading").hide();
+            // 间隔太短
+            if (new Date().getTime() - startTime < 300 || countDown <= 0) {
+              startTime = 0;
+              // 不录音
+              clearTimeout(recordTimer);
+            } else {
+              // 松手结束录音
+              wx.stopRecord({
+                success: function(res) {
+                  console.log(res);
+                  // 上传到服务器
+                  uploadVoice(res.localId);
+                },
+                fail: function(res) {
+                  $(".talk_show").removeClass("live");
+                  $(".talk_loading").hide();
+                  alert(JSON.stringify(res));
                 }
               });
             }
+            countDownTimer && clearInterval(countDownTimer);
+            countDownTimer = 0;
+            countDown = 10;
           });
-        }
         //注册微信播放录音结束事件
         wx.onVoicePlayEnd({
           success: function(res) {
             stopWave();
           }
         });
-		$(".end_share").on("click", () => {
-			var shareData = {};
-			shareData["title"] = "“成”攻薅羊毛";
-			var score = window.localStorage.getItem("score");
-			alert(score);
-			shareData["desc"] = "“成”攻薅羊毛";
-			shareData["imgUrl"] = "../images/first.png";
-			shareData["success"] = function(res) {
-			  shareSuccess(res);
-			};
-			shareData["cancel"] = function(res) {
-			  shareFail(res);
-			};
-	
-			wx.onMenuShareAppMessage(shareData);
-			wx.onMenuShareTimeline(shareData);
-			wx.onMenuShareQQ(shareData);
-			wx.onMenuShareWeibo(shareData);
-			wx.onMenuShareQZone(shareData);
-		});
       });
     },
-    error: function() {}
+    error: function(err) {
+      alert(err);
+    }
   });
-}
+};

@@ -22,27 +22,46 @@ body {
   -webkit-text-size-adjust: 100% !important;
   text-size-adjust: 100% !important;
 }
-.index_first {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: url("../images/first.png");
-  background-size: 100% 100%;
-  z-index: 2;
+input{
+  border: none
 }
+img {
+  pointer-events: none;
+  -webkit-pointer-events: none;
+  -ms-pointer-events: none;
+  -moz-pointer-events: none;
+}
+.none {
+  display: none;
+}
+.index_first,
 .index_start {
+  width: 100%;
+  height: 100%;
+}
+.index_first img {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
-  height: 100%;
-  background: url("../images/start.png");
-  background-size: 100% 100%;
-  z-index: 1;
+  z-index: 6;
+}
+.index_start img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 5;
 }
 /* 对话框 */
+.index_talk {
+  height: 100%;
+  z-index: 3;
+}
+.index_talk_list {
+  height: 85%;
+  overflow: scroll;
+}
 /* 自己 */
 .im_me {
   padding: 10px 0 10px 5%;
@@ -125,26 +144,65 @@ img {
 .im_me_upimg img {
   float: right;
 }
-.talk_loading{
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    text-align: center;
+.talk_loading {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  z-index: 1;
 }
-.talk_loading img{
-    margin-top: 50%;
-    width: 170px;
-    height: 100px;
+.talk_next{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  text-align: center;
+  z-index: 1;
+}
+.talk_next .next_body{
+  margin: 50% auto;
+  background: #fff;
+  width: 170px;
+  height: 40px;
+  border-radius: .1rem;
+  color: #000;
+  line-height: 40px;
+  font-size: .18rem;
+}
+.talk_next .next_body div{
+  width: 49%;
+  height: 100%;
+  float: left;
+}
+.next_body_root+.next_body_question{
+  border-left: 1px solid #000; 
+}
+  .talk_loading img {
+  margin-top: 50%;
+  width: 170px;
+  height: 100px;
+}
+.playend {
+  width: 10px;
+  height: 10px;
 }
 /* 按钮 */
 .talk_luyin {
   width: 100%;
   margin: auto;
-  position: fixed;
-  top: 85%;
-  left: 0;
+  height: 15%;
+  z-index: 2;
+}
+.talk_onlong {
+  width: 1.90rem;
+  height: .55rem;
+  background: url("../images/clicklong.png");
+  background-size: 100% 100%;
+  border: none;
 }
 /* 尾页 */
 .index_end_bg {
@@ -161,7 +219,7 @@ img {
   -moz-filter: blur(7px);
   -o-filter: blur(7px);
   -ms-filter: blur(7px);
-  z-index: 2;
+  z-index: 1;
 }
 .index_end {
   position: absolute;
@@ -170,10 +228,10 @@ img {
   width: 100%;
   height: 100%;
   background: rgba(0, 0, 0, 0.6);
-  z-index: 3;
+  z-index: 2;
 }
 .end_title {
-    font-size: 20px;
+  font-size: 20px;
   width: 100%;
   text-align: center;
   position: fixed;
@@ -181,8 +239,8 @@ img {
   left: 0;
 }
 .end_content {
-    font-size: 14px;
-    width: 100%;
+  font-size: 14px;
+  width: 100%;
   text-align: center;
   position: fixed;
   top: 40%;
@@ -202,9 +260,72 @@ img {
   top: 70%;
   left: 0;
 }
-.talk_luyin div,
+.talk_show{
+  width: 1.90rem;
+  padding-top: .2rem;
+  margin: auto;
+}
+
 .end_clickget div,
 .end_share div {
-  width: 58%;
+  width: 1.90rem;
+  height: .55rem;
   margin: auto;
+}
+
+/* 按钮效果 */
+.live {
+  position: relative;
+  width: 1.90rem;
+}
+@keyframes living {
+  0% {
+    transform: scale(1);
+    opacity: 0.5;
+  }
+  50% {
+    transform: scale(1.5);
+    opacity: 0; /*圆形放大的同时，透明度逐渐减小为0*/
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0.5;
+  }
+}
+.live span {
+  position: absolute;
+  width: 1.90rem;
+  height: .55rem;
+  margin-top: .2rem;
+  left: 2px;
+  top: 0;
+  background: #ffc100;
+  border-radius: 50px;
+  opacity: 0;
+  -webkit-animation: living 3s linear infinite;
+  z-index: -1;
+}
+.live span:nth-child(2) {
+  -webkit-animation-delay: 1.5s; /*第二个span动画延迟1.5秒*/
+}
+/* 弹窗 */
+.setPhone {
+  z-index: 99;
+  position: absolute;
+  top: 30%;
+  left: 20%;
+  width: 60%;
+  background: #fff;
+  text-align: center;
+}
+.getPhone {
+  width: 90%;
+  height: 35px;
+}
+.getPhone_btn {
+  width: 100%;
+  height: 50px;
+  line-height: 50px;
+  font-size: 18px;
+  background: #e7001d;
 }

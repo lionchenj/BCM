@@ -64,7 +64,6 @@ function share() {
             $(".talk_show").addClass("live");
             $(".talk_loading").show();
             startTime = new Date().getTime();
-            
             // 延时后录音，避免误操作
             recordTimer = setTimeout(function() {
               wx.startRecord({
@@ -128,10 +127,40 @@ function share() {
             stopWave();
           }
         });
-      });
+        //分享
+          var shareData = {};
+          shareData["title"] = "BCM贺元宵对成语赢红包";
+          shareData["desc"] = "元宵羊毛，非“成”勿扰";
+          shareData["imgUrl"] = "https://dev170.weibanker.cn/chenjj/www/BCM/images/first.png";
+          shareData["link"] =
+            "https://dev170.weibanker.cn/chenjj/www/BCM/index.html";
+          shareData["success"] = function() {
+            $.ajax({
+              url:
+                "https://dev170.weibanker.cn/hongjh/www/bcm/api?url=userShare",
+              type: "post",
+              data: { openid: userInfo.openid },
+              dataType: "json",
+              success: function(data) {
+                if (data.errno == "0") {
+                  shareSuccess(res);
+                }
+              },
+              error: function() {}
+            });
+          };
+          shareData["cancel"] = function() {
+            shareFail(res);
+          };
+          wx.onMenuShareAppMessage(shareData);
+          wx.onMenuShareTimeline(shareData);
+          wx.onMenuShareQQ(shareData);
+          wx.onMenuShareWeibo(shareData);
+          wx.onMenuShareQZone(shareData);
+        });
     },
     error: function(err) {
       alert(err);
     }
   });
-};
+}

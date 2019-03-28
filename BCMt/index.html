@@ -9,12 +9,12 @@
       rel="stylesheet"
       type="text/css"
       media="screen"
-      href="./css/index.css?v=6.9"
+      href="./css/index.css?v=7"
     />
   </head>
   <body>
     <div class="share_btn none">
-      <div>点击右上角分享</div>
+      <div>请使用浏览器下方分享功能分享</div>
     </div>
     <div class="loading none">
       <div class="loading_content">
@@ -34,9 +34,6 @@
     <!-- 聊天 -->
     <div class="index_talk">
       <div class="index_talk_list" id="index_talk_list">
-        <div class="talk_loading none">
-          <img src="./images/luyin.png" />
-        </div>
         <div class="talk_next none">
           <div class="next_body">
             <div class="next_img">
@@ -54,9 +51,8 @@
       </div>
       <div class="talk_luyin">
         <div class="talk_show">
-          <div class="talk_btn talk_onlong" id="talk_luyin"></div>
-          <span></span>
-          <span></span>
+          <input class="setAnswer" id="setAnswer" placeholder="请输入答案" type="text"  />
+          <div class="answer">答</div>
         </div>
       </div>
     </div>
@@ -88,12 +84,7 @@
       </div>
       <div class="end_ps">最终解释权归BCM Social Corp.所有</div>
     </div>
-    <script
-      type="text/javascript"
-      src="https://res.wx.qq.com/open/js/jweixin-1.4.0.js"
-    ></script>
     <script type="text/javascript" src="./js/jquery-1.11.3.min.js"></script>
-    <script type="text/javascript" src="./js/share.js?v=6.9"></script>
     <script type="text/javascript" src="./js/index.js?v=16"></script>
   </body>
 </html>
